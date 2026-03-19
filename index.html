@@ -376,66 +376,109 @@
     }
 
     /* ════════════════════════════════════════════════════════
-       MODAL PROGRAMA
+       LAUNCH SCREEN — alerta de lanzamiento
     ════════════════════════════════════════════════════════ */
-    #progOv {
-      z-index:150;
-      background:rgba(0,0,0,.78);
-      backdrop-filter:blur(7px);
+    #launchOv {
+      z-index:300;
+      background:radial-gradient(ellipse at center, #0d2e15 0%, #020a04 100%);
+      flex-direction:column;
+      gap:0;
     }
 
-    .modal {
-      background:#0b1a0e;
-      border:1px solid rgba(94,203,124,.18);
-      border-radius:26px; padding:42px;
-      max-width:520px; width:100%;
-      animation:popIn .38s cubic-bezier(.34,1.56,.64,1) both;
+    /* Anillo giratorio exterior */
+    .launch-ring {
+      position:relative;
+      width:200px; height:200px;
+      margin-bottom:36px;
     }
-    @keyframes popIn {
-      from{opacity:0;transform:scale(.82) translateY(22px)}
-      to  {opacity:1;transform:scale(1)   translateY(0)}
+    .launch-ring svg {
+      position:absolute; inset:0;
+      animation:spinRing 1.8s linear infinite;
+    }
+    @keyframes spinRing {
+      to { transform:rotate(360deg); }
     }
 
-    .modal h3 {
+    /* Número de cuenta regresiva */
+    .launch-count {
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
       font-family:'Space Grotesk',sans-serif;
-      font-size:1.45rem; margin-bottom:8px;
+      font-size:5rem; font-weight:700;
+      background:linear-gradient(135deg,var(--gl),var(--gold));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      animation:countPop .4s cubic-bezier(.34,1.56,.64,1) both;
     }
-    .modal .sub { color:var(--mut); font-size:.88rem; margin-bottom:28px; }
+    @keyframes countPop {
+      from{opacity:0;transform:scale(.4)}
+      to  {opacity:1;transform:scale(1)}
+    }
 
-    .ao {
-      display:flex; align-items:flex-start; gap:16px;
-      padding:18px; border:1px solid var(--bdr);
-      border-radius:15px; margin-bottom:12px;
-      transition:border-color .22s;
+    .launch-title {
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(1.4rem,4vw,2rem); font-weight:700;
+      color:#fff; text-align:center; margin-bottom:10px;
+      animation:up .5s ease both;
     }
-    .ao:hover { border-color:var(--gv); }
-    .ai { font-size:1.45rem; margin-top:2px; }
-    .ao h4 { font-size:.94rem; margin-bottom:4px; }
-    .ao p  { font-size:.82rem; color:var(--mut); margin-bottom:0; }
+    .launch-sub {
+      font-size:.9rem; color:var(--mut); text-align:center;
+      margin-bottom:40px;
+      animation:up .5s .1s ease both;
+    }
 
-    .urlbox {
-      display:flex; align-items:center; gap:10px;
-      background:rgba(255,255,255,.05); border:1px solid var(--bdr);
-      border-radius:10px; padding:10px 14px; margin-top:10px;
-      font-family:monospace; font-size:.82rem;
-      color:var(--gl); word-break:break-all;
+    /* Barra de progreso */
+    .launch-bar-wrap {
+      width:min(80vw,340px);
+      height:4px; background:rgba(255,255,255,.1);
+      border-radius:99px; overflow:hidden;
+      margin-bottom:32px;
     }
-    .cbtn {
-      background:var(--gm); border:none; color:#fff;
-      border-radius:8px; padding:6px 10px;
-      cursor:pointer; font-size:.75rem; white-space:nowrap;
-      transition:opacity .2s;
+    .launch-bar {
+      height:100%;
+      background:linear-gradient(90deg,var(--gm),var(--gl),var(--gold));
+      border-radius:99px;
+      width:0%;
+      transition:width .05s linear;
     }
-    .cbtn:hover { opacity:.8; }
 
-    .mclose {
-      display:block; width:100%; margin-top:22px;
-      background:rgba(255,255,255,.06); border:1px solid var(--bdr);
-      color:var(--mut); border-radius:13px; padding:13px;
-      cursor:pointer; font-size:.88rem;
-      transition:background .2s, color .2s;
+    /* Puntos de estado */
+    .launch-dots {
+      display:flex; gap:8px; justify-content:center;
+      margin-bottom:28px;
     }
-    .mclose:hover { background:rgba(255,255,255,.1); color:var(--txt); }
+    .ld {
+      width:8px; height:8px; border-radius:50%;
+      background:rgba(255,255,255,.2);
+      transition:background .3s, transform .3s;
+    }
+    .ld.on { background:var(--gl); transform:scale(1.3); }
+
+    .launch-status {
+      font-size:.78rem; color:var(--mut);
+      letter-spacing:.12em; text-transform:uppercase;
+      min-height:1.2em; text-align:center;
+      animation:fadeStatus .3s ease both;
+    }
+    @keyframes fadeStatus {
+      from{opacity:0;transform:translateY(6px)}
+      to  {opacity:1;transform:translateY(0)}
+    }
+
+    /* Glow verde central pulsante */
+    .launch-glow {
+      position:absolute;
+      width:350px; height:350px;
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(46,158,82,.35) 0%,transparent 70%);
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      animation:glowPulse 2s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes glowPulse {
+      0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}
+      50%     {opacity:1; transform:translate(-50%,-50%) scale(1.15)}
+    }
 
     /* ─── Footer ──────────────────────────────────────────── */
     footer {
@@ -497,7 +540,7 @@
   <!-- Cards -->
   <div class="grid">
 
-    <div class="card c1" onclick="openProg()">
+    <div class="card c1" onclick="openLaunch()">
       <div class="glow"></div>
       <div class="cnum">01 — Aplicación</div>
       <div class="cicon"><i class="fa-solid fa-display"></i></div>
@@ -597,43 +640,42 @@
 </div>
 
 <!-- ═══════════════════════════════════════════
-     MODAL — PROGRAMA
+     LAUNCH SCREEN — Acceso al sistema
 ═══════════════════════════════════════════ -->
-<div class="overlay" id="progOv" onclick="handleProgClick(event)" style="z-index:150;background:rgba(0,0,0,.78)">
-  <div class="modal">
-    <h3>Acceder al Sistema</h3>
-    <p class="sub">Trámites de Rectoría · Red interna UTC</p>
+<div class="overlay" id="launchOv">
+  <div class="launch-glow"></div>
 
-    <div class="ao">
-      <span class="ai">🌐</span>
-      <div>
-        <h4>URL directa (red interna)</h4>
-        <p>Conectado a la red de la universidad, abre en tu navegador:</p>
-        <div class="urlbox">
-          <span id="progUrl">URL disponible próximamente</span>
-          <button class="cbtn" onclick="copyUrl()"><i class="fa-solid fa-copy"></i> Copiar</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="ao">
-      <span class="ai">📱</span>
-      <div>
-        <h4>Escanea el QR</h4>
-        <p>Apunta tu celular al código QR del stand para acceder al instante.</p>
-      </div>
-    </div>
-
-    <div class="ao">
-      <span class="ai">🖥️</span>
-      <div>
-        <h4>Demo en esta pantalla</h4>
-        <p>Pide al expositor que te muestre el sistema en la computadora del stand.</p>
-      </div>
-    </div>
-
-    <button class="mclose" onclick="closeProg()">Cerrar</button>
+  <!-- Anillo SVG giratorio + número -->
+  <div class="launch-ring">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="90" stroke="rgba(94,203,124,0.15)" stroke-width="6"/>
+      <path d="M100 10 A90 90 0 0 1 190 100" stroke="url(#grad)" stroke-width="6" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#5ecb7c"/>
+          <stop offset="100%" stop-color="#c8e87a"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="launch-count" id="launchCount">3</div>
   </div>
+
+  <div class="launch-title">Iniciando Sistema</div>
+  <div class="launch-sub">Trámites de Rectoría · UTC</div>
+
+  <!-- Barra de progreso -->
+  <div class="launch-bar-wrap">
+    <div class="launch-bar" id="launchBar"></div>
+  </div>
+
+  <!-- Puntos de estado -->
+  <div class="launch-dots">
+    <div class="ld" id="ld1"></div>
+    <div class="ld" id="ld2"></div>
+    <div class="ld" id="ld3"></div>
+  </div>
+
+  <div class="launch-status" id="launchStatus">Conectando a la red UTC...</div>
 </div>
 
 <script>
@@ -772,23 +814,79 @@ function handlePdfClick(e){
 }
 
 /* ═══ Programa ═══════════════════════════════════════════════ */
-function openProg(){ document.getElementById('progOv').classList.add('on'); }
-function closeProg(){ document.getElementById('progOv').classList.remove('on'); }
-function handleProgClick(e){
-  if(e.target===document.getElementById('progOv')) closeProg();
+/* ═══ Launch Screen ══════════════════════════════════════════ */
+// ⬇️ Pon aquí la URL del sistema cuando la tengas
+const SYSTEM_URL = 'URL_DEL_SISTEMA_AQUI';
+
+const launchMessages = [
+  'Conectando a la red UTC...',
+  'Verificando credenciales...',
+  'Cargando módulos del sistema...',
+  'Iniciando sesión segura...',
+  '¡Listo! Redirigiendo...'
+];
+
+function openLaunch(){
+  const ov = document.getElementById('launchOv');
+  ov.classList.add('on');
+
+  // Reset visual
+  document.getElementById('launchBar').style.width = '0%';
+  document.getElementById('launchCount').textContent = '3';
+  document.getElementById('launchCount').style.animation = 'none';
+  ['ld1','ld2','ld3'].forEach(id => document.getElementById(id).classList.remove('on'));
+  setStatus(launchMessages[0]);
+
+  let count = 3;
+  let progress = 0;
+  let msgIdx = 0;
+
+  // Cuenta regresiva
+  const countdown = setInterval(()=>{
+    count--;
+    const el = document.getElementById('launchCount');
+    el.style.animation = 'none';
+    void el.offsetWidth; // reflow para reiniciar animación
+    el.style.animation = 'countPop .4s cubic-bezier(.34,1.56,.64,1) both';
+    el.textContent = count > 0 ? count : '🚀';
+    if(count <= 0) clearInterval(countdown);
+  }, 1000);
+
+  // Barra de progreso + mensajes de estado
+  const barTimer = setInterval(()=>{
+    progress += 2;
+    document.getElementById('launchBar').style.width = progress + '%';
+
+    // Activar puntos
+    if(progress >= 33)  document.getElementById('ld1').classList.add('on');
+    if(progress >= 66)  document.getElementById('ld2').classList.add('on');
+    if(progress >= 95)  document.getElementById('ld3').classList.add('on');
+
+    // Cambiar mensajes de estado
+    const newIdx = Math.min(Math.floor(progress / 20), launchMessages.length - 1);
+    if(newIdx !== msgIdx){ msgIdx = newIdx; setStatus(launchMessages[msgIdx]); }
+
+    if(progress >= 100){
+      clearInterval(barTimer);
+      setTimeout(()=>{
+        ov.classList.remove('on');
+        window.location.href = SYSTEM_URL;
+      }, 400);
+    }
+  }, 60); // 60ms × 50 pasos = ~3 segundos total
 }
-function copyUrl(){
-  const url=document.getElementById('progUrl').textContent;
-  navigator.clipboard.writeText(url).then(()=>{
-    const b=document.querySelector('.cbtn');
-    b.innerHTML='<i class="fa-solid fa-check"></i> ¡Copiado!';
-    setTimeout(()=>{ b.innerHTML='<i class="fa-solid fa-copy"></i> Copiar'; },2000);
-  });
+
+function setStatus(msg){
+  const el = document.getElementById('launchStatus');
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = 'fadeStatus .3s ease both';
+  el.textContent = msg;
 }
 
 /* ═══ Teclado ════════════════════════════════════════════════ */
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){ closeTri(); closePdf(); closeProg(); }
+  if(e.key==='Escape'){ closeTri(); closePdf(); }
 });
 </script>
 </body>
